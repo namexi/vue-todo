@@ -71,8 +71,9 @@
                   }
       
                     label {
-                        position: absolute;
-                        padding: 15px 15px 15px 60px;
+                       flex: 1;
+                        width: 100%;
+                        padding: 15px 15px 15px 10px;
                     }
                     a {
                         position: absolute;
@@ -125,9 +126,9 @@
             <label for="toggle-all"></label>
             <ul>
                 <li @mouseenter="showDelBtn" @mouseleave="hiddenDelBtn">
-                    <div class="view" @dblclick.stop="showEditInput">
+                    <div class="view">
                         <input type="checkbox" class="toggle">
-                        <label>内容</label>
+                        <label @click.stop="showEditInput">内容</label>
                         <a v-show="delBtn">×</a>
                     </div>  
                     <input type="text" class="edit" :class="{'edit-show':'editText'}" v-show="editText" v-todo-focus="editText" @blur="hiddeEditText">
@@ -143,7 +144,8 @@ export default {
     data () {
         return {
             delBtn: false,
-            editText: false
+            editText: false,
+            clcikTime : 0
         }
     },
     methods:{
@@ -154,7 +156,15 @@ export default {
            this.delBtn = false 
         },
         showEditInput () {
-            this.editText = true
+            if (this.clcikTime === 0 && !this.editText) {
+                this.clcikTime = new Date().getTime()
+            }else if (new Date().getTime() - this.clcikTime > 800 && !this.editText) {
+               this.clcikTime = 0
+            } else {
+                this.editText = true
+                this.clcikTime = 0
+            }
+            console.log(new Date().getTime() - this.clcikTime)
         },
         hiddeEditText(){
             this.editText = false
