@@ -1,19 +1,15 @@
-<style>
-
+<style lang="scss">
+   
 </style>
 
 <template>
     <div>
-        <jtodo-header></jtodo-header>
+       <router-view></router-view>
     </div>
 </template>
 
 <script>
-import JtodoHeader from './component/header.vue'
 export default {
-    name: 'App',
-    components: {
-        JtodoHeader
-    }
+    name: 'App'
 }
 </script>
