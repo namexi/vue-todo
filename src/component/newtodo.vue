@@ -1,18 +1,17 @@
 <style lang="scss" scoped>
     .newtodo {
-        width: 600px;
         margin: 0 auto;
         background: #fff;
         position: relative;
         .add{
             box-sizing: content-box;
-            padding: 16px 16px 16px 60px;
+            padding: .32rem .32rem .32rem 1.2rem;
             background: rgba(0, 0, 0, 0.003); 
             box-shadow: inset 0 -2px 1px rgba(0,0,0,0.03);
             .newtodo-text {
                 width: 100%;
                 border: none;
-                font-size: 24px;
+                font-size: .48rem;
                 font-family: inherit;
                 font-weight: inherit;
                 color: inherit;
@@ -26,19 +25,19 @@
             }
             .toggle-all{
                 position:absolute;
-                	top: 13px;
+                	top: .26rem;
 	                left: 0;
-	                width: 60px;
-	                height: 34px;
+	                width: 1.2rem;
+	                height: .67rem;
                     text-align: center;
                     border: none;
                     -webkit-appearance: none;
                     transform: rotate(90deg);
                 &::before{
                     content: " ❮";
-                    font-size: 22px;
+                    font-size: .44rem;
                     color: #e6e6e6;
-                    padding: 10px 27px 10px 27px;
+                    padding: .2rem .34rem .2rem .34rem;
                 }
                 &:checked:before{
                     content: " ❯";
@@ -47,20 +46,24 @@
                 }
             }
             ul{
+                box-sizing: content-box;
+                padding: 0 0 0 1.2rem;
                 li{
                     position: relative;
-                    font-size: 24px;
+                    font-size: .48rem;
                     border-bottom: 1px solid #ededed;
                     top:0;
                 }
                 .view{
                     display: flex;
                   .toggle{
-                    width: 40px;
-                    height:40px;
+                    width: .8rem;
+                    height:.8rem;
                     border:none;
                     -webkit-appearance: none;
-                    margin: 9px 5px;
+                    position: absolute;
+                    left: -53px;
+                    margin: .18rem .1rem;
                     z-index: 99;
                     &::before {
                         content: url('../assets/images/round.svg');
@@ -69,26 +72,26 @@
                         content: url('../assets/images/done.svg');
                     }
                   }
-      
                     label {
                        flex: 1;
                         width: 100%;
-                        padding: 15px 15px 15px 10px;
+                        padding: .3rem .3rem .3rem .2rem;
                     }
                     a {
                         position: absolute;
-                        right: 10px;
+                        right: .2rem;
                         top: 0;
                         bottom:0;
                         color:#cc9a9a;
-                        width: 40px;
+                        width: .8rem;
                         text-align:center;
-                        height: 40px;
-                        line-height:40px;
-                        margin: 13px 0;
-                        font-size: 30px;
+                        height: .8rem;
+                        line-height:.8rem;
+                        margin: .26rem 0;
+                        font-size: .6rem;
                         font-family: inherit;
                         font-weight: inherit;
+                        background: none;
                         &:hover {
                             color: #b83f45;
                         }
@@ -98,19 +101,16 @@
                       width: 100%;
                       border:none;
                       border: 1px solid #999;
-                      box-shadow: inset 0 -1px 5px 0 rgba(0, 0, 0, 0.2);
-                      font-size: 24px;
+                      box-shadow: inset 0 -1px .1rem 0 rgba(0, 0, 0, 0.2);
+                      font-size: .48rem;
                       line-height: 1.4em;
+                      box-sizing: border-box;
+                      padding: .24rem 0;
+                      position: absolute;
+                      top: 0;
+                      right: .06rem;
                       z-index: 99;
                     }
-                  .edit-show {
-                        width: 537px;
-                        position: absolute;
-                        top: 0;
-                        left: 60px;
-                        right: 3px;
-                        padding: 12px 0; 
-                  }
                 }
             }
     }
@@ -158,13 +158,12 @@ export default {
         showEditInput () {
             if (this.clcikTime === 0 && !this.editText) {
                 this.clcikTime = new Date().getTime()
-            }else if (new Date().getTime() - this.clcikTime > 800 && !this.editText) {
+            }else if (new Date().getTime() - this.clcikTime > 500 && !this.editText) {
                this.clcikTime = 0
             } else {
                 this.editText = true
                 this.clcikTime = 0
             }
-            console.log(new Date().getTime() - this.clcikTime)
         },
         hiddeEditText(){
             this.editText = false

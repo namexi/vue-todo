@@ -1,9 +1,9 @@
 <style lang="scss" scoped>
     .j-header { 
         text-align: center;
-        margin:20px;
+        margin:.4rem;
         h1 {
-            font-size: 100px;
+            font-size: 2rem;
             font-weight: 100;
             color: rgba(175, 47, 47, 0.15);
             text-rendering: optimizeLegibility

@@ -1,12 +1,14 @@
 <style class="scss">
-
+    .todo-app {
+        margin: 0 .2rem;
+    }
 </style>
 
 <template>
-        <div>
-        <jtodo-header></jtodo-header>
-        <jtodo-newtodo></jtodo-newtodo>
-        <jtodo-footer></jtodo-footer>
+        <div class="todo-app">
+            <jtodo-header></jtodo-header>
+            <jtodo-newtodo></jtodo-newtodo>
+            <jtodo-footer></jtodo-footer>
         </div>
 </template>
 

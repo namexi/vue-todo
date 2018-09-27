@@ -1,15 +1,18 @@
+@charset "utf-8";
 html, body, h1{
     margin:0;
     padding:0;
     width:100%;
-    height:100%
+    height:100%;
+    font-size:40px;
   }
-  body{  
+  body,a{  
     background: #f5f5f5;
     overflow: hidden;
-    font: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font: 12px 'Helvetica Neue', Helvetica, Arial, sans-serif;
     color: #4d4d4d;
-    font-smoothing: antialiased;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     font-weight: 300
   }
   input, textarea, select, button {
@@ -24,4 +27,20 @@ html, body, h1{
     margin:0;
     padding:0;
     text-decoration: none
+  }
+  button {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    font-size: 100%;
+    vertical-align: baseline;
+    font-family: inherit;
+    font-weight: inherit;
+    color: inherit;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  a:hover, button:hover {
+    cursor: pointer;
   }
