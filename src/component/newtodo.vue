@@ -26,23 +26,24 @@
             .toggle-all{
                 position:absolute;
                 	top: .26rem;
-	                left: 0;
+	                left: -2px;
 	                width: 1.2rem;
 	                height: .67rem;
                     text-align: center;
                     border: none;
-                    -webkit-appearance: none;
-                    transform: rotate(90deg);
-                &::before{
-                    content: " ❮";
+                &:before{
+                    content: "\276F";
                     font-size: .44rem;
                     color: #e6e6e6;
                     padding: .2rem .34rem .2rem .34rem;
                 }
                 &:checked:before{
-                    content: " ❯";
-                    color: #737373;
-                     
+                    color: #737373; 
+                }
+                &:checked {
+                    transform: rotate(90deg);
+                    -webkit-transform:rotate(90deg);
+                    -moz-transform:rotate(90deg);
                 }
             }
             ul{
@@ -60,7 +61,6 @@
                     width: .8rem;
                     height:.8rem;
                     border:none;
-                    -webkit-appearance: none;
                     position: absolute;
                     left: -53px;
                     margin: .18rem .1rem;
@@ -96,6 +96,7 @@
                             color: #b83f45;
                         }
                     }
+                    
                   }
                   .edit {
                       width: 100%;
@@ -122,16 +123,16 @@
             <input type="text" placeholder="接下来要去做什么？" class="newtodo-text">
         </div>
         <div class="main">
-            <input id="toggle-all" type="checkbox" class="toggle-all">
+            <input id="toggle-all" type="checkbox" class="toggle-all" v-model="allCkecked">
             <label for="toggle-all"></label>
             <ul>
-                <li @mouseenter="showDelBtn" @mouseleave="hiddenDelBtn">
-                    <div class="view">
-                        <input type="checkbox" class="toggle">
-                        <label @click.stop="showEditInput">内容</label>
-                        <a v-show="delBtn">×</a>
+                <li v-for="(item,index) in list" :key="index">
+                    <div class="view" @mouseenter="showDelBtn" @mouseleave="hiddenDelBtn" >
+                        <input type="checkbox" class="toggle" :checked="allCkecked" v-model="item.checked">
+                        <label @click.stop="showEditInput">{{item.text}}</label>
+                        <a class="hiddend">×</a>
                     </div>  
-                    <input type="text" class="edit" :class="{'edit-show':'editText'}" v-show="editText" v-todo-focus="editText" @blur="hiddeEditText">
+                    <input type="text" class="edit" v-show="editText" v-todo-focus="falge" @blur="hiddeEditText">
                 </li>
             </ul>
         </div> 
@@ -145,28 +146,66 @@ export default {
         return {
             delBtn: false,
             editText: false,
-            clcikTime : 0
+            clcikTime : 0,
+            allCkecked: false,
+            text: '',
+            falge:false,
+            edit: {},
+            list: [{
+                id: 0,
+                text: 'java',
+                checked: false
+            },{
+               id: 1,
+                text: 'PHP',
+                checked: true  
+            },{
+                id: 2,
+                text: 'WEB',
+                checked: true  
+            }
+            ]
         }
     },
     methods:{
-        showDelBtn(){
-            this.delBtn = true
+        showDelBtn(e){
+            if (e.target) e.currentTarget.lastElementChild.style.display = 'block'
         },
-        hiddenDelBtn(){
-           this.delBtn = false 
+        hiddenDelBtn(e){
+            if(!this.delBtn && e.target ) e.currentTarget.lastElementChild.style.display = 'none'    
         },
-        showEditInput () {
-            if (this.clcikTime === 0 && !this.editText) {
+        showEditInput (e) {
+            if (!this.text) this.text = e.currentTarget.textContent
+            if (this.clcikTime === 0 && !this.falge) {
                 this.clcikTime = new Date().getTime()
-            }else if (new Date().getTime() - this.clcikTime > 500 && !this.editText) {
-               this.clcikTime = 0
-            } else {
-                this.editText = true
-                this.clcikTime = 0
+                console.log("开始获取第一次时间了")
+            }else{
+                if (this.text === e.currentTarget.textContent) {
+                    if (new Date().getTime() - this.clcikTime > 500 && !this.falge) {
+                         this.falge = false
+                        this.clcikTime = 0
+                        this.text = ''
+                         console.log("两次点击时间过长")
+                        return
+                    }
+                    console.log("点击了相同的元素")
+                    console.log("连续点击了两次")
+                   this.edit = e.currentTarget.parentElement.nextElementSibling
+                    this.falge = true
+                   this.edit.style.display = 'block'
+                }else {
+                    this.edit.style.display = 'none'
+                    this.falge = false
+                    this.text = ''
+                    this.clcikTime =  new Date().getTime()
+                    console.log("点击了不相同的元素")
+                    return
+                }
             }
+           
         },
-        hiddeEditText(){
-            this.editText = false
+        hiddeEditText(e){
+          e.currentTarget.style.display = 'none'
         }
     },
     directives: {

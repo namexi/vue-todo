@@ -20,7 +20,9 @@ html, body, h1{
     color: initial;
     margin: 0;
     font: 400 13.3333px Arial;
-    outline: 0
+    outline: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
 }
   ul, li, ol, a{  
     list-style: none;
@@ -39,6 +41,7 @@ html, body, h1{
     font-weight: inherit;
     color: inherit;
     -webkit-appearance: none;
+    -moz-appearance: none;
     appearance: none;
   }
   a:hover, button:hover {
