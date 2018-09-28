@@ -92,6 +92,7 @@
                         font-family: inherit;
                         font-weight: inherit;
                         background: none;
+                        display: none;
                         &:hover {
                             color: #b83f45;
                         }
@@ -99,6 +100,7 @@
                     
                   }
                   .edit {
+                      display: none;
                       width: 100%;
                       border:none;
                       border: 1px solid #999;
@@ -128,11 +130,11 @@
             <ul>
                 <li v-for="(item,index) in list" :key="index">
                     <div class="view" @mouseenter="showDelBtn" @mouseleave="hiddenDelBtn" >
-                        <input type="checkbox" class="toggle" :checked="allCkecked" v-model="item.checked">
-                        <label @click.stop="showEditInput">{{item.text}}</label>
-                        <a class="hiddend">×</a>
+                        <input type="checkbox" class="toggle"  v-model="item.checked">
+                        <label @click.stop="showEditInput">{{item.text}}+++{{allCkecked}}</label>
+                        <a>×</a>
                     </div>  
-                    <input type="text" class="edit" v-show="editText" v-todo-focus="falge" @blur="hiddeEditText">
+                    <input type="text" class="edit" v-todo-focus="falge" @blur="hiddeEditText">
                 </li>
             </ul>
         </div> 
@@ -144,26 +146,24 @@ export default {
     name: 'JtodoNewtodo',
     data () {
         return {
-            delBtn: false,
-            editText: false,
             clcikTime : 0,
             allCkecked: false,
             text: '',
             falge:false,
-            edit: {},
-            list: [{
-                id: 0,
-                text: 'java',
-                checked: false
-            },{
-               id: 1,
-                text: 'PHP',
-                checked: true  
-            },{
-                id: 2,
-                text: 'WEB',
-                checked: true  
-            }
+            list: [
+                {
+                    id: 0,
+                    text: 'java',
+                    checked: false
+                },{
+                id: 1,
+                    text: 'PHP',
+                    checked: true  
+                },{
+                    id: 2,
+                    text: 'WEB',
+                    checked: true  
+                }
             ]
         }
     },
@@ -172,7 +172,7 @@ export default {
             if (e.target) e.currentTarget.lastElementChild.style.display = 'block'
         },
         hiddenDelBtn(e){
-            if(!this.delBtn && e.target ) e.currentTarget.lastElementChild.style.display = 'none'    
+            if (e.target) e.currentTarget.lastElementChild.style.display = 'none'    
         },
         showEditInput (e) {
             if (!this.text) this.text = e.currentTarget.textContent
@@ -181,28 +181,23 @@ export default {
                 console.log("开始获取第一次时间了")
             }else{
                 if (this.text === e.currentTarget.textContent) {
-                    if (new Date().getTime() - this.clcikTime > 500 && !this.falge) {
-                         this.falge = false
+                    if (new Date().getTime() - this.clcikTime > 300 && !this.falge) {
                         this.clcikTime = 0
-                        this.text = ''
                          console.log("两次点击时间过长")
                         return
                     }
                     console.log("点击了相同的元素")
                     console.log("连续点击了两次")
-                   this.edit = e.currentTarget.parentElement.nextElementSibling
+                   this.text = e.currentTarget.parentElement.nextElementSibling
                     this.falge = true
-                   this.edit.style.display = 'block'
+                   this.text.style.display = 'block'
                 }else {
-                    this.edit.style.display = 'none'
                     this.falge = false
-                    this.text = ''
+                    this.text = e.currentTarget.textContent
                     this.clcikTime =  new Date().getTime()
                     console.log("点击了不相同的元素")
-                    return
                 }
             }
-           
         },
         hiddeEditText(e){
           e.currentTarget.style.display = 'none'
