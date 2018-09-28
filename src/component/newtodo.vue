@@ -77,6 +77,10 @@
                         width: 100%;
                         padding: .3rem .3rem .3rem .2rem;
                     }
+                    .completed{
+                        color: #d9d9d9;
+                        text-decoration: line-through;
+                    }
                     a {
                         position: absolute;
                         right: .2rem;
@@ -122,16 +126,16 @@
 <template>
     <div class="newtodo">
         <div class="add">
-            <input type="text" placeholder="接下来要去做什么？" class="newtodo-text">
+            <input type="text" placeholder="接下来要去做什么？" class="newtodo-text" v-model="input" @keyup.enter="inputData">
         </div>
         <div class="main">
-            <input id="toggle-all" type="checkbox" class="toggle-all" v-model="allCkecked">
+            <input id="toggle-all" type="checkbox" class="toggle-all" v-model="allCkecked" @click="setAllCkecked">
             <label for="toggle-all"></label>
             <ul>
                 <li v-for="(item,index) in list" :key="index">
                     <div class="view" @mouseenter="showDelBtn" @mouseleave="hiddenDelBtn" >
-                        <input type="checkbox" class="toggle"  v-model="item.checked">
-                        <label @click.stop="showEditInput">{{item.text}}+++{{allCkecked}}</label>
+                        <input type="checkbox" class="toggle"  v-model="item.checked" @click="getCkecked">
+                        <label @click.stop="showEditInput" :class="{completed:item.checked}">{{item.text}}    {{item.checked}}</label>
                         <a>×</a>
                     </div>  
                     <input type="text" class="edit" v-todo-focus="falge" @blur="hiddeEditText">
@@ -149,7 +153,7 @@ export default {
             clcikTime : 0,
             allCkecked: false,
             text: '',
-            falge:false,
+            falge: false,
             list: [
                 {
                     id: 0,
@@ -158,13 +162,15 @@ export default {
                 },{
                 id: 1,
                     text: 'PHP',
-                    checked: true  
+                    checked: false  
                 },{
                     id: 2,
                     text: 'WEB',
-                    checked: true  
+                    checked: false  
                 }
-            ]
+            ],
+            index: 0,
+            input: ''
         }
     },
     methods:{
@@ -188,9 +194,9 @@ export default {
                     }
                     console.log("点击了相同的元素")
                     console.log("连续点击了两次")
-                   this.text = e.currentTarget.parentElement.nextElementSibling
+                    this.text = e.currentTarget.parentElement.nextElementSibling
                     this.falge = true
-                   this.text.style.display = 'block'
+                    this.text.style.display = 'block'
                 }else {
                     this.falge = false
                     this.text = e.currentTarget.textContent
@@ -201,6 +207,30 @@ export default {
         },
         hiddeEditText(e){
           e.currentTarget.style.display = 'none'
+        },
+        setAllCkecked (e){
+            this.allCkecked =  e.target.checked
+            this.index = this.allCkecked? this.list.length : 0
+           this.list.forEach(el => {
+               el.checked = this.allCkecked
+           })
+           console.log(this.list)
+        },
+        getCkecked (e) {
+            if (e.target.checked)  this.index+=1 
+            if (!e.target.checked && this.index > 0) this.index-=1
+            if (this.index === this.list.length) 
+            {this.allCkecked = true
+            }else {
+            this.allCkecked = false
+            }
+            console.log(this.list)
+        },
+        inputData () {
+            const idx = this.list.length? this.list.length : 0
+            const inputArr = { id:idx, text:this.input,checked:false }
+            this.list.push(inputArr)
+           this.input = '' 
         }
     },
     directives: {
