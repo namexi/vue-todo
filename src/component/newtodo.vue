@@ -6,7 +6,7 @@
         .add{
             box-sizing: content-box;
             padding: .32rem .32rem .32rem 1.2rem;
-            background: rgba(0, 0, 0, 0.003); 
+            background: rgba(0, 0, 0, 0.003);
             box-shadow: inset 0 -2px 1px rgba(0,0,0,0.03);
             .newtodo-text {
                 width: 100%;
@@ -38,7 +38,7 @@
                     padding: .2rem .34rem .2rem .34rem;
                 }
                 &:checked:before{
-                    color: #737373; 
+                    color: #737373;
                 }
                 &:checked {
                     transform: rotate(90deg);
@@ -101,7 +101,7 @@
                             color: #b83f45;
                         }
                     }
-                    
+
                   }
                   .edit {
                       display: none;
@@ -128,49 +128,42 @@
         <div class="add">
             <input type="text" placeholder="接下来要去做什么？" class="newtodo-text" v-model="input" @keyup.enter="inputData">
         </div>
-        <div class="main">
+        <div class="main" v-show="todosShow">
             <input id="toggle-all" type="checkbox" class="toggle-all" v-model="allCkecked" @click="setAllCkecked">
             <label for="toggle-all"></label>
             <ul>
                 <li v-for="(item,index) in list" :key="index">
                     <div class="view" @mouseenter="showDelBtn" @mouseleave="hiddenDelBtn" >
-                        <input type="checkbox" class="toggle"  v-model="item.checked" @click="getCkecked">
-                        <label @click.stop="showEditInput" :class="{completed:item.checked}">{{item.text}}    {{item.checked}}</label>
-                        <a>×</a>
-                    </div>  
-                    <input type="text" class="edit" v-todo-focus="falge" @blur="hiddeEditText">
+                        <input type="checkbox" class="toggle"  :checked="item.checked" @click="getCkecked($event,item)">
+                        <label @click.stop="showEditInput($event,item.text)" :class="{completed:item.checked}">{{item.text}}</label>
+                        <a @click="dellTOdo(index)">×</a>
+                    </div>
+                    <form action="" @submit="changeText($event,item)">
+                        <input type="text" class="edit" v-todo-focus="falge" ref="text" @blur="hiddeEditText" :value="item.text">
+                    </form>
                 </li>
             </ul>
-        </div> 
+        </div>
     </div>
 </template>
 
 <script>
 export default {
     name: 'JtodoNewtodo',
+    props: ['list'],
     data () {
         return {
             clcikTime : 0,
             allCkecked: false,
             text: '',
             falge: false,
-            list: [
-                {
-                    id: 0,
-                    text: 'java',
-                    checked: false
-                },{
-                id: 1,
-                    text: 'PHP',
-                    checked: false  
-                },{
-                    id: 2,
-                    text: 'WEB',
-                    checked: false  
-                }
-            ],
             index: 0,
             input: ''
+        }
+    },
+    computed: {
+        todosShow () {
+            return this.list.length
         }
     },
     methods:{
@@ -178,9 +171,9 @@ export default {
             if (e.target) e.currentTarget.lastElementChild.style.display = 'block'
         },
         hiddenDelBtn(e){
-            if (e.target) e.currentTarget.lastElementChild.style.display = 'none'    
+            if (e.target) e.currentTarget.lastElementChild.style.display = 'none'
         },
-        showEditInput (e) {
+        showEditInput (e,item) {
             if (!this.text) this.text = e.currentTarget.textContent
             if (this.clcikTime === 0 && !this.falge) {
                 this.clcikTime = new Date().getTime()
@@ -189,14 +182,21 @@ export default {
                 if (this.text === e.currentTarget.textContent) {
                     if (new Date().getTime() - this.clcikTime > 300 && !this.falge) {
                         this.clcikTime = 0
-                         console.log("两次点击时间过长")
+                        this.text = ''
+                        console.log("两次点击时间过长")
                         return
                     }
                     console.log("点击了相同的元素")
                     console.log("连续点击了两次")
-                    this.text = e.currentTarget.parentElement.nextElementSibling
+                    //this.text = e.currentTarget.parentElement.nextElementSibling                   
                     this.falge = true
-                    this.text.style.display = 'block'
+                    this.text = this.$refs.text
+                    this.text.forEach(el => {
+                        if (el.value === item) {
+                            el.style.display = 'block'
+                        }
+                    })
+                    //this.text.style.display = 'block'
                 }else {
                     this.falge = false
                     this.text = e.currentTarget.textContent
@@ -214,31 +214,44 @@ export default {
            this.list.forEach(el => {
                el.checked = this.allCkecked
            })
-           console.log(this.list)
         },
-        getCkecked (e) {
-            if (e.target.checked)  this.index+=1 
+        getCkecked (e,item) {
+            if (e.target.checked)  this.index+=1
             if (!e.target.checked && this.index > 0) this.index-=1
-            if (this.index === this.list.length) 
-            {this.allCkecked = true
+            if (this.index === this.list.length){
+                this.allCkecked = true
             }else {
-            this.allCkecked = false
+                this.allCkecked = false
             }
-            console.log(this.list)
+            item.checked = e.target.checked
         },
         inputData () {
+            if (!this.input.trim()) return
             const idx = this.list.length? this.list.length : 0
             const inputArr = { id:idx, text:this.input,checked:false }
-            this.list.push(inputArr)
-           this.input = '' 
+            this.list.unshift(inputArr)
+            this.input = ''
+            this.$emit('change',this.list)
+        },
+        dellTOdo (index){
+            let dellOk = this.list.splice(index,1)
+            if (dellOk.length >= 1) this.$emit('change',this.list)
+        },
+        changeText (e,item) {
+          let newText = e.currentTarget.children[0].value
+          item.text = newText
+          e.currentTarget.children[0].style.display = 'none'
         }
     },
     directives: {
 		'todo-focus': function (el, binding) {
 			if (binding.value) {
-				el.focus();
+				el.focus()
 			}
 		}
-	}
+    },
+    created () {
+        this.$emit('change',this.list)
+    }
 }
 </script>

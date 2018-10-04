@@ -9,8 +9,9 @@
         position: relative;
         box-sizing: content-box;
         span {
+            float: left;
             strong{
-               font-weight:300;
+               font-weight:400;
         }
         }
         ul {
@@ -20,7 +21,7 @@
             right: 0;
             left: 0;
             text-align: center;
-             li {
+            li {
                 display: inline;
                 margin: 0 .03rem;
                 a {
@@ -37,6 +38,7 @@
         button {
             position: absolute;
             right: .2rem;
+            line-height: .4rem
         }
         &:before {
             content: '';
@@ -49,25 +51,76 @@
             box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), 0 8px 0 -3px #f6f6f6, 0 9px 1px -3px rgba(0, 0, 0, 0.2), 0 16px 0 -6px #f6f6f6, 0 17px 2px -6px rgba(0, 0, 0, 0.2);
         }
     }
+    .text {
+        text-align: center;
+        margin-top: 1.3rem;
+        font-size: 10px;
+        color: #bfbfbf
+    }
 </style>
 
 <template>
-    <div class="footer">
+<div>
+    <div class="footer" v-show="sum">
         <span>
-            <strong>0</strong>
+            <strong>{{sum}}</strong>
             items left
          </span>
         <ul>
-            <li><a href="#" class ="active">All</a></li>
-            <li><a href="#">Active</a></li>
-            <li><a href="#">Completed</a></li>
+            <li v-for="tab in tabs" :key="tab" :ref="tab">
+                <a href="#" :class ="state === tab ? 'active':''" :ref="tab" @click="clickStyle(tab)">{{tab}}</a>
+            </li>
         </ul>
-        <button>Clear completed</button>
+        <button v-show="clearShow" @click="clearCompleted">Clear completed</button>
     </div>
+    <div class="text">
+        <p>Double-click to edit a todo</p>
+        <p>Written by Name Xi</p>
+    </div>
+</div>
 </template>
 
 <script>
 export default {
-    name: 'JtodoFooter'
+    name: 'JtodoFooter',
+    props: {
+      state: String,
+      lists: Array
+    },
+    data () {
+        return {
+            tabs:['All','Active','Completed']
+        }
+    },
+    computed: {
+        sum (){
+            return this.lists.length
+        },
+        clearShow () {
+            let flag
+            this.lists.forEach(element => {
+                if (element.checked === true) {
+                    flag = true
+                }
+            })
+            return flag
+        }
+    },
+    methods: {
+        clickStyle (tab) {
+            if (tab !== this.tabs[0]){
+                const aObj = this.$refs[this.tabs[0]][0]
+                aObj.classList.remove('active')
+            }
+          this.$emit('change',tab)
+        },
+        clearCompleted () {
+            this.$emit('clearCompleted')
+        }
+    },
+    mounted () {
+       const aObj = this.$refs[this.tabs[0]][0]
+       aObj.classList.add('active')
+    }
 }
 </script>
