@@ -34,7 +34,7 @@ if (isDev) {
     module: {
       rules: [
         {
-          test: /\.scss/,
+          test: /\.sass/,
           use: [
             'style-loader',
             'css-loader',
