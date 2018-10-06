@@ -1,6 +1,6 @@
-<style class="scss">
+<style lang="scss" scoped>
     .todo-app {
-        margin: 0 .2rem;
+        margin: 0 .2rem
     }
 </style>
 
@@ -9,13 +9,15 @@
             <jtodo-header></jtodo-header>
             <jtodo-newtodo @change="getDataList" :list="list"></jtodo-newtodo>
             <jtodo-footer @change="getTabs" @clearCompleted="clearCompleted" :state="tab" :lists="lists"></jtodo-footer>
+            <jtodo-bottom></jtodo-bottom>
         </div>
 </template>
 
 <script>
-import JtodoHeader from './header.vue'
+import JtodoHeader from '../public/header.vue'
 import JtodoNewtodo from './newtodo.vue'
 import JtodoFooter from './footer.vue'
+import JtodoBottom from '../public/bottompage.vue'
 export default {
     name: 'TodoApp',
     data () {
@@ -42,7 +44,8 @@ export default {
     components: {
         JtodoHeader,
         JtodoNewtodo,
-        JtodoFooter
+        JtodoFooter,
+        JtodoBottom
     },
     computed : {
         choice () {
