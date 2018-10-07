@@ -51,7 +51,7 @@
             box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), 0 8px 0 -3px #f6f6f6, 0 9px 1px -3px rgba(0, 0, 0, 0.2), 0 16px 0 -6px #f6f6f6, 0 17px 2px -6px rgba(0, 0, 0, 0.2);
         }
     }
-    
+
 </style>
 
 <template>
@@ -68,51 +68,51 @@
         </ul>
         <button v-show="clearShow" @click="clearCompleted">Clear completed</button>
     </div>
-  
+
 </div>
 </template>
 
 <script>
 export default {
-    name: 'JtodoFooter',
-    props: {
-      state: String,
-      lists: Array
-    },
-    data () {
-        return {
-            tabs:['All','Active','Completed']
-        }
-    },
-    computed: {
-        sum (){
-            return this.lists.length
-        },
-        clearShow () {
-            let flag
-            this.lists.forEach(element => {
-                if (element.checked === true) {
-                    flag = true
-                }
-            })
-            return flag
-        }
-    },
-    methods: {
-        clickStyle (tab) {
-            if (tab !== this.tabs[0]){
-                const aObj = this.$refs[this.tabs[0]][0]
-                aObj.classList.remove('active')
-            }
-          this.$emit('change',tab)
-        },
-        clearCompleted () {
-            this.$emit('clearCompleted')
-        }
-    },
-    mounted () {
-       const aObj = this.$refs[this.tabs[0]][0]
-       aObj.classList.add('active')
+  name: 'JtodoFooter',
+  props: {
+    state: String,
+    lists: Array
+  },
+  data () {
+    return {
+      tabs: ['All', 'Active', 'Completed']
     }
+  },
+  computed: {
+    sum () {
+      return this.lists.length
+    },
+    clearShow () {
+      let flag
+      this.lists.forEach(element => {
+        if (element.checked === true) {
+          flag = true
+        }
+      })
+      return flag
+    }
+  },
+  methods: {
+    clickStyle (tab) {
+      if (tab !== this.tabs[0]) {
+        const aObj = this.$refs[this.tabs[0]][0]
+        aObj.classList.remove('active')
+      }
+      this.$emit('change', tab)
+    },
+    clearCompleted () {
+      this.$emit('clearCompleted')
+    }
+  },
+  mounted () {
+    const aObj = this.$refs[this.tabs[0]][0]
+    aObj.classList.add('active')
+  }
 }
 </script>

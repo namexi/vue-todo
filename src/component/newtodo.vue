@@ -149,109 +149,109 @@
 
 <script>
 export default {
-    name: 'JtodoNewtodo',
-    props: ['list'],
-    data () {
-        return {
-            clcikTime : 0,
-            allCkecked: false,
-            text: '',
-            falge: false,
-            index: 0,
-            input: ''
-        }
-    },
-    computed: {
-        todosShow () {
-            return this.list.length
-        }
-    },
-    methods:{
-        showDelBtn(e){
-            if (e.target) e.currentTarget.lastElementChild.style.display = 'block'
-        },
-        hiddenDelBtn(e){
-            if (e.target) e.currentTarget.lastElementChild.style.display = 'none'
-        },
-        showEditInput (e,item) {
-            if (!this.text) this.text = e.currentTarget.textContent
-            if (this.clcikTime === 0 && !this.falge) {
-                this.clcikTime = new Date().getTime()
-                console.log("开始获取第一次时间了")
-            }else{
-                if (this.text === e.currentTarget.textContent) {
-                    if (new Date().getTime() - this.clcikTime > 300 && !this.falge) {
-                        this.clcikTime = 0
-                        this.text = ''
-                        console.log("两次点击时间过长")
-                        return
-                    }
-                    console.log("点击了相同的元素")
-                    console.log("连续点击了两次")
-                    //this.text = e.currentTarget.parentElement.nextElementSibling                   
-                    this.falge = true
-                    this.text = this.$refs.text
-                    this.text.forEach(el => {
-                        if (el.value === item) {
-                            el.style.display = 'block'
-                        }
-                    })
-                    //this.text.style.display = 'block'
-                }else {
-                    this.falge = false
-                    this.text = e.currentTarget.textContent
-                    this.clcikTime =  new Date().getTime()
-                    console.log("点击了不相同的元素")
-                }
-            }
-        },
-        hiddeEditText(e){
-          e.currentTarget.style.display = 'none'
-        },
-        setAllCkecked (e){
-            this.allCkecked =  e.target.checked
-            this.index = this.allCkecked? this.list.length : 0
-           this.list.forEach(el => {
-               el.checked = this.allCkecked
-           })
-        },
-        getCkecked (e,item) {
-            if (e.target.checked)  this.index+=1
-            if (!e.target.checked && this.index > 0) this.index-=1
-            if (this.index === this.list.length){
-                this.allCkecked = true
-            }else {
-                this.allCkecked = false
-            }
-            item.checked = e.target.checked
-        },
-        inputData () {
-            if (!this.input.trim()) return
-            const idx = this.list.length? this.list.length : 0
-            const inputArr = { id:idx, text:this.input,checked:false }
-            this.list.unshift(inputArr)
-            this.input = ''
-            this.$emit('change',this.list)
-        },
-        dellTOdo (index){
-            let dellOk = this.list.splice(index,1)
-            if (dellOk.length >= 1) this.$emit('change',this.list)
-        },
-        changeText (e,item) {
-          let newText = e.currentTarget.children[0].value
-          item.text = newText
-          e.currentTarget.children[0].style.display = 'none'
-        }
-    },
-    directives: {
-		'todo-focus': function (el, binding) {
-			if (binding.value) {
-				el.focus()
-			}
-		}
-    },
-    created () {
-        this.$emit('change',this.list)
+  name: 'JtodoNewtodo',
+  props: ['list'],
+  data () {
+    return {
+      clcikTime: 0,
+      allCkecked: false,
+      text: '',
+      falge: false,
+      index: 0,
+      input: ''
     }
+  },
+  computed: {
+    todosShow () {
+      return this.list.length
+    }
+  },
+  methods: {
+    showDelBtn (e) {
+      if (e.target) e.currentTarget.lastElementChild.style.display = 'block'
+    },
+    hiddenDelBtn (e) {
+      if (e.target) e.currentTarget.lastElementChild.style.display = 'none'
+    },
+    showEditInput (e, item) {
+      if (!this.text) this.text = e.currentTarget.textContent
+      if (this.clcikTime === 0 && !this.falge) {
+        this.clcikTime = new Date().getTime()
+        console.log('开始获取第一次时间了')
+      } else {
+        if (this.text === e.currentTarget.textContent) {
+          if (new Date().getTime() - this.clcikTime > 300 && !this.falge) {
+            this.clcikTime = 0
+            this.text = ''
+            console.log('两次点击时间过长')
+            return
+          }
+          console.log('点击了相同的元素')
+          console.log('连续点击了两次')
+          // this.text = e.currentTarget.parentElement.nextElementSibling
+          this.falge = true
+          this.text = this.$refs.text
+          this.text.forEach(el => {
+            if (el.value === item) {
+              el.style.display = 'block'
+            }
+          })
+          // this.text.style.display = 'block'
+        } else {
+          this.falge = false
+          this.text = e.currentTarget.textContent
+          this.clcikTime = new Date().getTime()
+          console.log('点击了不相同的元素')
+        }
+      }
+    },
+    hiddeEditText (e) {
+      e.currentTarget.style.display = 'none'
+    },
+    setAllCkecked (e) {
+      this.allCkecked = e.target.checked
+      this.index = this.allCkecked ? this.list.length : 0
+      this.list.forEach(el => {
+        el.checked = this.allCkecked
+      })
+    },
+    getCkecked (e, item) {
+      if (e.target.checked) this.index += 1
+      if (!e.target.checked && this.index > 0) this.index -= 1
+      if (this.index === this.list.length) {
+        this.allCkecked = true
+      } else {
+        this.allCkecked = false
+      }
+      item.checked = e.target.checked
+    },
+    inputData () {
+      if (!this.input.trim()) return
+      const idx = this.list.length ? this.list.length : 0
+      const inputArr = { id: idx, text: this.input, checked: false }
+      this.list.unshift(inputArr)
+      this.input = ''
+      this.$emit('change', this.list)
+    },
+    dellTOdo (index) {
+      let dellOk = this.list.splice(index, 1)
+      if (dellOk.length >= 1) this.$emit('change', this.list)
+    },
+    changeText (e, item) {
+      let newText = e.currentTarget.children[0].value
+      item.text = newText
+      e.currentTarget.children[0].style.display = 'none'
+    }
+  },
+  directives: {
+    'todo-focus': function (el, binding) {
+      if (binding.value) {
+        el.focus()
+      }
+    }
+  },
+  created () {
+    this.$emit('change', this.list)
+  }
 }
 </script>

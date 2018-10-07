@@ -19,60 +19,69 @@ import JtodoNewtodo from './newtodo.vue'
 import JtodoFooter from './footer.vue'
 import JtodoBottom from '../public/bottompage.vue'
 export default {
-    name: 'TodoApp',
-    data () {
-        return {
-          tab: '',
-          lists: [
-                {
-                    id: 0,
-                    text: 'java',
-                    checked: false
-                },{
-                id: 1,
-                    text: 'PHP',
-                    checked: false
-                },{
-                    id: 2,
-                    text: 'WEB',
-                    checked: false
-                }
-            ],
-            list: []
+  name: 'TodoApp',
+  data () {
+    return {
+      tab: '',
+      lists: [
+        {
+          id: 0,
+          text: 'java',
+          checked: false
+        }, {
+          id: 1,
+          text: 'PHP',
+          checked: false
+        }, {
+          id: 2,
+          text: 'WEB',
+          checked: false
         }
-    },
-    components: {
-        JtodoHeader,
-        JtodoNewtodo,
-        JtodoFooter,
-        JtodoBottom
-    },
-    computed : {
-        choice () {
-            return this.lists.filter( element => element.checked )
-        },
-        nochoice () {
-            return this.lists.filter( element => !element.checked )
-        }
-    },
-    methods:{
-        getTabs (tab) {
-            this.tab = tab
-            if (tab === 'All') return this.list = this.lists
-            if (tab === 'Active') return this.list = this.nochoice
-            if (tab === 'Completed') return this.list = this.choice
-        },
-        getDataList (list) {
-            this.lists = list
-            console.log(this.lists)
-        },
-        clearCompleted () {
-            this.list = this.nochoice
-            this.lists = this.list
-        }
-    },
-    created () {
-        this.list = this.lists
+      ],
+      list: []
     }
+  },
+  components: {
+    JtodoHeader,
+    JtodoNewtodo,
+    JtodoFooter,
+    JtodoBottom
+  },
+  computed: {
+    choice () {
+      return this.lists.filter(element => element.checked)
+    },
+    nochoice () {
+      return this.lists.filter(element => !element.checked)
+    }
+  },
+  methods: {
+    getTabs (tab) {
+      this.tab = tab
+      if (tab === 'All') {
+        this.list = this.lists
+        return this.list
+      }
+      if (tab === 'Active') {
+        this.list = this.nochoice
+        return this.list
+      }
+      if (tab === 'Completed') {
+        this.list = this.choice
+        return this.list
+      }
+    },
+    getDataList (list) {
+      this.lists = list
+      console.log(this.lists)
+    },
+    clearCompleted () {
+      this.list = this.nochoice
+      this.lists = this.list
+    }
+  },
+  created () {
+    this.list = this.lists
+  }
 }
 </script>

@@ -5,7 +5,7 @@ import TodoApp from '../component/todoApp.vue'
 Vue.use(Router)
 
 export default new Router({
-    routes:[
-        {path:'/',component:TodoApp}
-    ]
+  routes: [
+    { path: '/', component: TodoApp }
+  ]
 })

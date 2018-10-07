@@ -7,7 +7,7 @@
 
 <script>
 export default {
-    name: 'JtodoBottom '
+  name: 'JtodoBottom '
 }
 </script>
 
