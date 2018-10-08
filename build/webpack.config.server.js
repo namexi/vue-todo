@@ -7,14 +7,6 @@ const VueServerPlugin = require('vue-server-renderer/server-plugin')
 
 const isDev = process.env.NODE_ENV === 'development'
 
-const defaultPluins = [
-  new webpack.DefinePlugin({
-    'process.env': {
-      NODE_ENV: isDev ? '"development"' : '"production"'
-    }
-  })
-]
-
 let config
 config = merge(baseConfig,{
   target: 'node',  //指定打包运行环境
@@ -47,14 +39,14 @@ config = merge(baseConfig,{
     ]
   },
   plugins:[
-  new ExtractPlugin('styles.[contentHash:8].css'),
-  new webpack.DefinePlugin({
-    'process.env': {
-      NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development'),
-      VUE_ENV: "server"
-    }
-  }),
-  new VueServerPlugin()
+    new ExtractPlugin('styles.[contentHash:8].css'),
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development'),
+        VUE_ENV: "server"
+      }
+    }),
+    new VueServerPlugin()
   ]
 })
 
