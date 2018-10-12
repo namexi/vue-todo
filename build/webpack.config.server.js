@@ -15,7 +15,7 @@ config = merge(baseConfig,{
   output: {
     libraryTarget: 'commonjs2',   // 指定 出口文件 规范
     filename: 'server.js',
-    path: path.join(__dirname, '../server/build') // 指定 出口路径
+    path: path.join(__dirname, '../server-build') // 指定 出口路径
   },
   externals: Object.keys(require('../package.json').dependencies), // 排除打包package中生产环境中的文件
   module: {
@@ -46,7 +46,7 @@ config = merge(baseConfig,{
         VUE_ENV: "server"
       }
     }),
-    new VueServerPlugin()
+    new VueServerPlugin()  // 生成的JSon文件 默认名为：vue-ssr-server-bundle.json
   ]
 })
 

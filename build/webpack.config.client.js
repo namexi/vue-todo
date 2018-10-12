@@ -4,6 +4,7 @@ const webpack = require('webpack')
 const merge = require('webpack-merge')
 const ExtractPlugin = require('extract-text-webpack-plugin')
 const baseConfig = require('./webpack.config.base.js')
+const VueClientPlugin = require('vue-server-renderer/client-plugin')
 
 const isDev = process.env.NODE_ENV === 'development'
 
@@ -15,7 +16,8 @@ const defaultPluins = [
   }),
   new HTMLPlugin({
     template: 'index.html',
-  })
+  }),
+  new VueClientPlugin()  // 生成生产环境所需文件  默认名“vue-ssr-client-manifest.json”
 ]
 
 const devServer = {
